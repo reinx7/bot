@@ -1,0 +1,60 @@
+import { useState } from 'react';
+
+export default function Home() {
+  const [codigo, setCodigo] = useState('');
+  const [quantidade, setQuantidade] = useState(1);
+  const [status, setStatus] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Processando...');
+    try {
+      // Chamar a API do back-end para utilizar o código
+      const response = await fetch('/api/utilizar-codigo', {
+        method: 'POST',
+        body: JSON.stringify({ codigo, quantidade }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      if (data.sucesso) {
+        setStatus(`Código utilizado ${quantidade} vez(es) com sucesso!`);
+      } else {
+        setStatus('Erro ao utilizar o código.');
+      }
+    } catch (error) {
+      setStatus('Erro ao processar a solicitação.');
+    }
+  };
+
+  return (
+    <div>
+      <h1>Utilizar Código de Convite do TikTok</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Código de Convite:
+          <input
+            type="text"
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Quantidade:
+          <select
+            value={quantidade}
+            onChange={(e) => setQuantidade(Number(e.target.value))}
+          >
+            {[...Array(10)].map((_, i) => (
+              <option key={i} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button type="submit">Continuar</button>
+      </form>
+      <p>{status}</p>
+    </div>
+  );
+}
