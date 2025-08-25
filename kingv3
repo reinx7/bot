@@ -51,9 +51,10 @@
         return;
       }
 
-      const produto = { nome, preco };
-      produtos.push(produto);
+      produtos.push({ nome, preco });
       atualizarLista();
+      document.getElementById("nomeProduto").value = "";
+      document.getElementById("precoProduto").value = "";
     }
 
     function atualizarLista() {
@@ -84,15 +85,12 @@
         return;
       }
 
-      // Taxa de 5% para você
       const taxa = valor * 0.05;
       const valorFinal = valor - taxa;
 
       document.getElementById("msgSaque").innerText =
-        `Você vai receber R$ ${valorFinal.toFixed(2)} na chave ${chavePix}. 
-        Taxa de R$ ${taxa.toFixed(2)} enviada para jnpereiraalves@gmail.com`;
-
-      // Aqui entraria a API real de Pix futuramente
+        `Você vai receber R$ ${valorFinal.toFixed(2)} na chave ${chavePix}. ` +
+        `Taxa de R$ ${taxa.toFixed(2)} enviada para jnpereiraalves@gmail.com`;
     }
   </script>
 </body>
